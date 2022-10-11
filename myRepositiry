@@ -77,3 +77,33 @@
 
         return $query->fetchAll();
     }
+
+
+
+    /**
+     * Метод принимает собраную DTO, класса CommentSearchDTO. Обрабатывает все параметры фильтрации внутри ее.
+     * Возвращает объект класса Select
+     *
+     * @param CommentSearchDTO $commentSearchDTO - собранная DTO с параметрами фильтрации
+     * @return Select
+     */
+    protected function selectWithRelations(CommentSearchDTO $commentSearchDTO): Select
+    {
+        $params = [];
+        if (null !== $commentSearchDTO->getDate()) {
+            $params['timestamp'] = ['between' => [
+                $commentSearchDTO->getDate()->setTime(0, 0)->format(DateFmt::DT_DB),
+                $commentSearchDTO->getDate()->setTime(23, 59)->format(DateFmt::DT_DB)]];
+        }
+        if (null !== $commentSearchDTO->getStaffName()) {
+            $params['staff.name'] = ['like' => '%' . $commentSearchDTO->getStaffName() . '%'];
+        }
+        if (null !== $commentSearchDTO->getRole()) {
+            $params['staff.role'] = ['=' => $commentSearchDTO->getRole()];
+        }
+        if (null !== $commentSearchDTO->getSubString()) {
+            $params['content'] = ['like' => '%' . $commentSearchDTO->getSubString() . '%'];
+        }
+
+        return $this->select()->where($params)->load('staff');
+    }
