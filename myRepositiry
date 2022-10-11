@@ -1,0 +1,79 @@
+    /**
+     * @inheritdoc
+     */
+    public function findByPK(int $id): ?SMSTemplate
+    {
+        return SMSTemplate::model()->findByPk($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCount(): int
+    {
+        $sql = 'SELECT * FROM `sms_template`';
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+
+        return $query->rowCount();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCountByDepartment(string $department): int
+    {
+        $sql = 'SELECT * FROM `sms_template` WHERE `department` = :department';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([':department' => $department]);
+
+        return $query->rowCount();
+    }
+    
+       /**
+     * @inheritdoc
+     */
+    public function getByDepartmentAndSortLimitOffset(
+        string $department,
+        int    $limit,
+        int    $offset,
+        string $sort,
+        string $direction,
+    ): array {
+        $sql = 'SELECT * FROM `sms_template` WHERE department = :department 
+                ORDER BY :sort :direction LIMIT ' . $limit . ' OFFSET ' . $offset;
+
+        $params = [
+            ':department' => $department,
+            ':sort' => $sort,
+            ':direction' => $direction,
+        ];
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute($params);
+
+        return $query->fetchAll();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBySortLimitOffset(
+        int    $limit,
+        int    $offset,
+        string $sort,
+        string $direction,
+    ): array {
+        $sql = 'SELECT * FROM `sms_template` ORDER BY :sort :direction
+                LIMIT ' . $limit . ' OFFSET ' . $offset;
+
+        $params = [
+            ':sort' => $sort,
+            ':direction' => $direction,
+        ];
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute($params);
+
+        return $query->fetchAll();
+    }
