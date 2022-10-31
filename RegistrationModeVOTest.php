@@ -1,3 +1,5 @@
+<?php
+
 /**
  * Тесты для методов класса RegistrationMode
  */
