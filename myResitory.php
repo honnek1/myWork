@@ -1,4 +1,7 @@
-    /**
+<?php   
+
+
+/**
      * @inheritdoc
      */
     public function findByPK(int $id): ?SMSTemplate
