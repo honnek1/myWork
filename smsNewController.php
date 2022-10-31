@@ -1,4 +1,7 @@
-    #[Permission(Staff::CAN_TEMPLATE)]
+ <?php
+
+
+#[Permission(Staff::CAN_TEMPLATE)]
     public function templates(
         ViewFactory                                                       $viewFactory,
         StaffAndRoleComponent                                             $staffAndRoleComponent,
