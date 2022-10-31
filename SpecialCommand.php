@@ -1,3 +1,4 @@
+<?php
 
     /**
      * Создаёт файл csv с данными для скоринга по файлу xlsx со столбцами clientId и dateOfReport
